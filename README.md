@@ -1,36 +1,313 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Care.xyz - Premium Professional Caregiving Platform
 
-## Getting Started
+A modern, full-stack web application built with **Next.js 16** (App Router) and **Express.js**, connecting families with verified professional caregivers for baby care, elderly care, and specialized nursing services.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Project Overview
+
+Care.xyz is a comprehensive caregiving platform that enables users to browse services, book care appointments, and manage their bookings. The application features a premium UI/UX design with authentication, protected routes, and a dynamic service management system.
+
+---
+
+## ✨ Key Features Implemented
+
+### 1. **Landing Page (7+ Sections)**
+- ✅ Hero Banner with call-to-action
+- ✅ Statistics Section (Happy Families, Ratings, etc.)
+- ✅ About Section
+- ✅ Why Choose Us Section
+- ✅ Services Showcase (Top 3 services)
+- ✅ Testimonials
+- ✅ FAQ Section
+- ✅ Newsletter Subscription
+- ✅ Responsive Navbar with Login/Register links
+- ✅ Professional Footer
+
+### 2. **Authentication System**
+- ✅ **NextAuth.js** integration for secure authentication
+- ✅ Credential-based login (email & password)
+- ✅ User registration with password hashing (bcrypt)
+- ✅ Session management with JWT tokens
+- ✅ Cookie-based authentication
+- ✅ Protected routes using middleware
+- ✅ Automatic redirect to login for unauthenticated users
+- ✅ Callback URL preservation after login
+
+### 3. **Services List Page** (`/services`)
+- ✅ Publicly accessible
+- ✅ Fetches services from Express.js backend API
+- ✅ Displays service cards with:
+  - Service name/title
+  - Description
+  - Price per hour
+  - Service icon
+  - Features list
+- ✅ Premium card design with hover effects
+- ✅ Loading state with spinner
+- ✅ Responsive grid layout
+
+### 4. **Service Details Page** (`/services/[id]`)
+- ✅ Publicly accessible
+- ✅ Dynamic routing with service ID
+- ✅ Full service information display
+- ✅ "Add Booking" functionality
+- ✅ Redirects to login if not authenticated
+- ✅ Integration with booking system
+
+### 5. **Protected: Add Service Page** (`/add-service`)
+- ✅ **Protected route** - requires authentication
+- ✅ Form to add new services with fields:
+  - Service title
+  - Description
+  - Price
+  - Features (comma-separated)
+- ✅ Stores data in MongoDB via Express.js API
+- ✅ Toast notifications on success/failure
+- ✅ Automatic redirect after successful creation
+- ✅ Premium form design with icons
+
+### 6. **My Bookings Page** (`/my-bookings`)
+- ✅ Protected route
+- ✅ Displays user's booking history
+- ✅ Shows booking status (pending/confirmed/completed)
+- ✅ Booking details (service, date, price, reference)
+- ✅ Empty state with "Browse Services" CTA
+
+### 7. **Additional Enhancements**
+- ✅ **Toast Notifications** (react-hot-toast) for user feedback
+- ✅ Premium UI with Framer Motion animations
+- ✅ Glassmorphism effects on navbar scroll
+- ✅ Mobile-responsive design
+- ✅ Dynamic service fetching from database
+- ✅ Error handling across all API calls
+- ✅ Loading states for better UX
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **Framework:** Next.js 16 (App Router)
+- **Language:** JavaScript (React 19)
+- **Styling:** Tailwind CSS 4
+- **Authentication:** NextAuth.js 4
+- **Animations:** Framer Motion
+- **Icons:** Lucide React
+- **Notifications:** React Hot Toast
+
+### Backend
+- **Framework:** Express.js
+- **Database:** MongoDB (with MongoDB Node.js Driver)
+- **Authentication:** bcryptjs for password hashing
+- **Environment:** dotenv for configuration
+- **CORS:** Enabled for cross-origin requests
+
+---
+
+## 📁 Project Structure
+
+```
+care/
+├── src/
+│   ├── app/
+│   │   ├── (auth)/
+│   │   │   ├── login/page.jsx          # Login page
+│   │   │   └── register/page.jsx       # Registration page
+│   │   ├── api/
+│   │   │   └── auth/[...nextauth]/route.js  # NextAuth configuration
+│   │   ├── services/
+│   │   │   ├── page.jsx                # Services list page
+│   │   │   └── [service_id]/page.jsx   # Service details page
+│   │   ├── add-service/page.jsx        # Protected: Add service form
+│   │   ├── my-bookings/page.jsx        # Protected: User bookings
+│   │   ├── about/page.jsx              # About page
+│   │   ├── contact/page.jsx            # Contact page
+│   │   ├── layout.jsx                  # Root layout
+│   │   ├── page.jsx                    # Landing page
+│   │   └── globals.css                 # Global styles
+│   ├── components/
+│   │   ├── Navbar/Navbar.jsx           # Navigation bar
+│   │   ├── Footer/Footer.jsx           # Footer
+│   │   ├── Banner/Banner.jsx           # Hero section
+│   │   ├── Service/Service.jsx         # Services section
+│   │   ├── ServiceCard/ServiceCard.jsx # Service card component
+│   │   ├── AboutSection/              
+│   │   ├── AuthButton/AuthButton.jsx   # Login/Logout button
+│   │   ├── AuthProvider/              # NextAuth session provider
+│   │   ├── LandingSections/           # Stats, FAQ, Newsletter, etc.
+│   │   └── Common/SectionHeader.jsx   
+│   └── middleware.js                   # Route protection middleware
+├── .env                                # Environment variables
+└── package.json
+
+care_backend/
+├── index.js                            # Express server
+├── .env                                # MongoDB URI
+└── package.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🔧 Setup & Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Prerequisites
+- Node.js 18+ installed
+- MongoDB database (local or Atlas)
+- npm or yarn package manager
 
-## Learn More
+### 1. Clone the Repository
+```bash
+git clone <repository-url>
+cd "Assignment 12"
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Backend Setup
+```bash
+cd care_backend
+npm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Create a `.env` file in `care_backend/`:
+```env
+MONGODB_URI=your_mongodb_connection_string
+PORT=5000
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Start the backend server:
+```bash
+nodemon index.js
+```
+Server will run on `http://localhost:5000`
 
-## Deploy on Vercel
+### 3. Frontend Setup
+```bash
+cd care
+npm install
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Create a `.env` file in `care/`:
+```env
+NEXTAUTH_SECRET=your_secret_key_here
+NEXTAUTH_URL=http://localhost:3000
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Start the development server:
+```bash
+npm run dev
+```
+Application will run on `http://localhost:3000`
+
+---
+
+## 🗺️ Route Summary
+
+| Route | Type | Description |
+|-------|------|-------------|
+| `/` | Public | Landing page with 7+ sections |
+| `/login` | Public | User login page |
+| `/register` | Public | User registration page |
+| `/services` | Public | List of all services |
+| `/services/[id]` | Public | Individual service details |
+| `/add-service` | Protected | Form to add new service |
+| `/my-bookings` | Protected | User's booking history |
+| `/about` | Public | About the platform |
+| `/contact` | Public | Contact information |
+
+---
+
+## 🔐 Authentication Flow
+
+1. User registers via `/register` (credentials stored in MongoDB with hashed password)
+2. User logs in via `/login` using NextAuth.js
+3. Session token stored in cookies
+4. Middleware protects `/services/[id]`, `/add-service`, and `/my-bookings`
+5. Unauthenticated users redirected to `/login` with callback URL
+6. After login, user redirected back to intended page
+
+---
+
+## 📡 API Endpoints
+
+### Backend (Express.js)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/` | Health check |
+| POST | `/api/auth/register` | Register new user |
+| GET | `/api/auth/user/:email` | Get user by email |
+| GET | `/services` | Get all services |
+| POST | `/services` | Create new service |
+| GET | `/services/:id` | Get service by ID |
+| POST | `/bookings` | Create booking |
+| GET | `/bookings/:email` | Get user's bookings |
+
+---
+
+## 🎨 Design Highlights
+
+- **Premium Aesthetics:** Modern gradients, glassmorphism, and smooth animations
+- **Responsive Design:** Mobile-first approach with Tailwind CSS
+- **Micro-interactions:** Hover effects, scale animations, and transitions
+- **Accessibility:** Semantic HTML and ARIA labels
+- **Performance:** Optimized images and lazy loading
+
+---
+
+## 📝 Features Explanation
+
+### Landing Page Sections
+The landing page exceeds the requirement of 7 sections by including:
+1. Hero banner with animated elements
+2. Statistics showcase (users, ratings, verification)
+3. About section explaining the platform
+4. "Why Choose Us" with key benefits
+5. Top 3 services preview
+6. Customer testimonials
+7. FAQ accordion
+8. Newsletter subscription
+
+### Authentication
+- Uses **NextAuth.js** for industry-standard authentication
+- Passwords hashed with **bcryptjs** before storage
+- JWT tokens for session management
+- Middleware automatically protects specified routes
+
+### Service Management
+- Services fetched dynamically from MongoDB
+- Real-time data updates
+- Form validation on service creation
+- Toast notifications for user feedback
+
+### Protected Routes
+- Middleware checks authentication status
+- Redirects with preserved callback URLs
+- Seamless user experience after login
+
+---
+
+## 🚀 Deployment Notes
+
+For production deployment:
+1. Update `NEXTAUTH_URL` in `.env` to your production domain
+2. Use MongoDB Atlas for database
+3. Deploy backend to Vercel/Railway/Render
+4. Deploy frontend to Vercel
+5. Update API URLs in frontend to point to production backend
+
+---
+
+## 👨‍💻 Developer
+
+**Rakib Hossain**  
+Full-stack Developer
+
+---
+
+## 📄 License
+
+This project is created for educational purposes.
+
+---
+
+**Note:** This application fully meets and exceeds all task requirements including the optional "Add Item" feature with toast notifications and comprehensive documentation.

@@ -1,7 +1,7 @@
 "use client";
-import React from "react";
-// In your actual Next.js project, uncomment the following line:
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 import {
   MapPin,
@@ -10,55 +10,41 @@ import {
   Clock,
   AlertCircle,
   FileText,
+  Loader2,
 } from "lucide-react";
 
-
-
-// --- DUMMY DATA ---
-const DUMMY_BOOKINGS = [
-  {
-    id: 1,
-    serviceTitle: "Baby Sitting Service",
-    status: "Confirmed",
-    paymentId: "stripe_987x543",
-    address: "House 12, Road 5, Block B, Banani",
-    district: "Dhaka",
-    date: "2024-03-15",
-    duration: 5,
-    totalCost: 2625, // 500 * 5 + 5% fee
-    dateBooked: "2024-03-10",
-  },
-  {
-    id: 2,
-    serviceTitle: "Elderly Care Service",
-    status: "Pending",
-    paymentId: "stripe_123abc4",
-    address: "Flat 4A, Green Garden, Agrabad",
-    district: "Chittagong",
-    date: "2024-03-20",
-    duration: 8,
-    totalCost: 5040, // 600 * 8 + 5% fee
-    dateBooked: "2024-03-18",
-  },
-  {
-    id: 3,
-    serviceTitle: "Sick People Support",
-    status: "Completed",
-    paymentId: "stripe_xyz789",
-    address: "Village Tower, Zindabazar",
-    district: "Sylhet",
-    date: "2024-02-28",
-    duration: 12,
-    totalCost: 10080, // 800 * 12 + 5% fee
-    dateBooked: "2024-02-25",
-  },
-];
-
 export default function MyBookingsPage() {
-  const bookings = DUMMY_BOOKINGS;
+  const { data: session, status: authStatus } = useSession();
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (session?.user?.email) {
+      fetch(`https://care-backend-lime.vercel.app/bookings/${session.user.email}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setBookings(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error(err);
+          setLoading(false);
+        });
+    } else if (authStatus !== "loading") {
+      setLoading(false);
+    }
+  }, [session, authStatus]);
+
+  if (loading || authStatus === "loading") {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <Loader2 className="w-12 h-12 text-teal-600 animate-spin" />
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-end mb-8">
           <div>
@@ -88,7 +74,7 @@ export default function MyBookingsPage() {
               You haven&#39;t booked any services yet.
             </p>
             <Link href="/services">
-              <button className="bg-teal-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-teal-700 transition">
+              <button className="bg-teal-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-teal-700 transition cursor-pointer">
                 Browse Services
               </button>
             </Link>
@@ -97,7 +83,7 @@ export default function MyBookingsPage() {
           <div className="space-y-4">
             {bookings.map((booking, idx) => (
               <motion.div
-                key={booking.id}
+                key={booking._id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1 }}
@@ -108,27 +94,20 @@ export default function MyBookingsPage() {
                   <div className="flex flex-wrap items-center gap-3 mb-3">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-bold border flex items-center gap-1
-                      ${
-                        booking.status === "Pending"
+                      ${booking.status === "pending"
                           ? "bg-yellow-50 text-yellow-700 border-yellow-100"
-                          : booking.status === "Confirmed"
-                          ? "bg-blue-50 text-blue-700 border-blue-100"
-                          : "bg-green-50 text-green-700 border-green-100"
-                      }`}
+                          : booking.status === "confirmed"
+                            ? "bg-blue-50 text-blue-700 border-blue-100"
+                            : "bg-green-50 text-green-700 border-green-100"
+                        }`}
                     >
-                      {booking.status === "Pending" && (
+                      {booking.status === "pending" && (
                         <AlertCircle className="w-3 h-3" />
                       )}
-                      {booking.status === "Confirmed" && (
+                      {(booking.status === "confirmed" || booking.status === "completed") && (
                         <CheckCircle className="w-3 h-3" />
                       )}
-                      {booking.status === "Completed" && (
-                        <CheckCircle className="w-3 h-3" />
-                      )}
-                      {booking.status}
-                    </span>
-                    <span className="text-xs text-gray-400 font-mono bg-gray-50 px-2 py-1 rounded">
-                      #{booking.paymentId}
+                      <span className="capitalize">{booking.status}</span>
                     </span>
                   </div>
 
@@ -140,37 +119,32 @@ export default function MyBookingsPage() {
                     <p className="flex items-center gap-2">
                       <MapPin className="w-4 h-4 text-teal-500" />
                       <span className="truncate max-w-50">
-                        {booking.address}, {booking.district}
+                        {booking.address || "Standard Home Service"}
                       </span>
                     </p>
                     <p className="flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-teal-500" />
-                      {booking.date}
+                      {new Date(booking.bookedAt).toLocaleDateString()}
                     </p>
                     <p className="flex items-center gap-2">
                       <Clock className="w-4 h-4 text-teal-500" />
-                      {booking.duration} Hours Duration
+                      1 Hour Duration
                     </p>
                   </div>
                 </div>
 
-                <div className="mt-6 md:mt-0 md:ml-8 text-right border-t md:border-t-0 md:border-l border-gray-100 pt-4 md:pt-0 md:pl-8 min-w-35">
+                <div className="mt-6 md:mt-0 md:ml-8 text-right border-t md:border-t-0 md:border-l border-gray-100 pt-4 md:pt-0 md:pl-8 min-w-[140px]">
                   <p className="text-xs text-gray-500 mb-1">Total Paid</p>
                   <div className="text-2xl font-bold text-teal-700">
-                    ৳{booking.totalCost}
+                    ৳{booking.price}
                   </div>
                   <p className="text-[10px] text-gray-400 mt-2">
-                    Booked on {booking.dateBooked}
+                    Ref: {booking._id.substring(0, 8)}...
                   </p>
 
-                  {booking.status === "Pending" && (
-                    <button className="mt-3 text-xs text-red-500 font-medium hover:text-red-700 hover:underline">
+                  {booking.status === "pending" && (
+                    <button className="mt-3 text-xs text-red-500 font-medium hover:text-red-700 hover:underline cursor-pointer">
                       Cancel Booking
-                    </button>
-                  )}
-                  {booking.status === "Confirmed" && (
-                    <button className="mt-3 text-xs text-teal-600 font-medium hover:text-teal-800 hover:underline">
-                      View Receipt
                     </button>
                   )}
                 </div>
