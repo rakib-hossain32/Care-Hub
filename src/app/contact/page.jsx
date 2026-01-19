@@ -56,7 +56,7 @@ const ContactPage = () => {
     return (
         <div className="bg-white min-h-screen">
             {/* Hero Section */}
-            <section className="relative pt-24 pb-20 overflow-hidden bg-gray-50/50">
+            <section className="relative pt-32 pb-20 overflow-hidden bg-gray-50/50">
                 <div className="absolute inset-0 -z-10">
                     <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-teal-50 rounded-full blur-[120px] opacity-60" />
                     <div className="absolute bottom-0 left-0 w-[50%] h-[50%] bg-rose-50 rounded-full blur-[120px] opacity-60" />
