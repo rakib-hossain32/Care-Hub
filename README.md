@@ -37,20 +37,8 @@ Care.xyz is a comprehensive caregiving platform that enables users to browse ser
 - ✅ Automatic redirect to login for unauthenticated users
 - ✅ Callback URL preservation after login
 
-### 3. **Services List Page** (`/services`)
-- ✅ Publicly accessible
-- ✅ Fetches services from Express.js backend API
-- ✅ Displays service cards with:
-  - Service name/title
-  - Description
-  - Price per hour
-  - Service icon
-  - Features list
-- ✅ Premium card design with hover effects
-- ✅ Loading state with spinner
-- ✅ Responsive grid layout
 
-### 4. **Service Details Page** (`/services/[id]`)
+### 3. **Service Details Page** (`/services/[id]`)
 - ✅ Publicly accessible
 - ✅ Dynamic routing with service ID
 - ✅ Full service information display
@@ -58,7 +46,7 @@ Care.xyz is a comprehensive caregiving platform that enables users to browse ser
 - ✅ Redirects to login if not authenticated
 - ✅ Integration with booking system
 
-### 5. **Protected: Add Service Page** (`/add-service`)
+### 4. **Protected: Add Service Page** (`/add-service`)
 - ✅ **Protected route** - requires authentication
 - ✅ Form to add new services with fields:
   - Service title
@@ -70,14 +58,14 @@ Care.xyz is a comprehensive caregiving platform that enables users to browse ser
 - ✅ Automatic redirect after successful creation
 - ✅ Premium form design with icons
 
-### 6. **My Bookings Page** (`/my-bookings`)
+### 5. **My Bookings Page** (`/my-bookings`)
 - ✅ Protected route
 - ✅ Displays user's booking history
 - ✅ Shows booking status (pending/confirmed/completed)
 - ✅ Booking details (service, date, price, reference)
 - ✅ Empty state with "Browse Services" CTA
 
-### 7. **Additional Enhancements**
+### 6. **Additional Enhancements**
 - ✅ **Toast Notifications** (react-hot-toast) for user feedback
 - ✅ Premium UI with Framer Motion animations
 - ✅ Glassmorphism effects on navbar scroll
@@ -120,7 +108,6 @@ care/
 │   │   ├── api/
 │   │   │   └── auth/[...nextauth]/route.js  # NextAuth configuration
 │   │   ├── services/
-│   │   │   ├── page.jsx                # Services list page
 │   │   │   └── [service_id]/page.jsx   # Service details page
 │   │   ├── add-service/page.jsx        # Protected: Add service form
 │   │   ├── my-bookings/page.jsx        # Protected: User bookings
@@ -161,17 +148,17 @@ care_backend/
 
 ### 1. Clone the Repository
 ```bash
-git clone <repository-url>
-cd "Assignment 12"
+git clone https://github.com/rakib-hossain32/Care-Hub.git
+cd "Care-Hub"
 ```
 
 ### 2. Backend Setup
 ```bash
-cd care_backend
+cd Care-Hub-Backend
 npm install
 ```
 
-Create a `.env` file in `care_backend/`:
+Create a `.env` file in `Care-Hub-Backend/`:
 ```env
 MONGODB_URI=your_mongodb_connection_string
 PORT=5000
@@ -185,11 +172,11 @@ Server will run on `http://localhost:5000`
 
 ### 3. Frontend Setup
 ```bash
-cd care
+cd Care-Hub
 npm install
 ```
 
-Create a `.env` file in `care/`:
+Create a `.env` file in `Care-Hub/`:
 ```env
 NEXTAUTH_SECRET=your_secret_key_here
 NEXTAUTH_URL=http://localhost:3000
@@ -210,7 +197,6 @@ Application will run on `http://localhost:3000`
 | `/` | Public | Landing page with 7+ sections |
 | `/login` | Public | User login page |
 | `/register` | Public | User registration page |
-| `/services` | Public | List of all services |
 | `/services/[id]` | Public | Individual service details |
 | `/add-service` | Protected | Form to add new service |
 | `/my-bookings` | Protected | User's booking history |
@@ -307,13 +293,3 @@ For production deployment:
 
 **Rakib Hossain**  
 Full-stack Developer
-
----
-
-## 📄 License
-
-This project is created for educational purposes.
-
----
-
-**Note:** This application fully meets and exceeds all task requirements including the optional "Add Item" feature with toast notifications and comprehensive documentation.
